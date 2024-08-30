@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acceder a la Cámara sin AR.js</title>
+    <title>Acceder a la Cámara Trasera</title>
     <style>
         body, html {
             margin: 0;
@@ -18,7 +18,6 @@
         video {
             width: 100%;
             height: auto;
-            transform: scaleX(-1); /* Flip para que se vea como un espejo */
         }
     </style>
 </head>
@@ -26,11 +25,13 @@
     <video id="videoElement" autoplay></video>
 
     <script>
-        // Acceder a la cámara
+        // Acceder a la cámara trasera
         const video = document.getElementById('videoElement');
 
         if (navigator.mediaDevices.getUserMedia) {
-            navigator.mediaDevices.getUserMedia({ video: true })
+            navigator.mediaDevices.getUserMedia({ 
+                video: { facingMode: { exact: "environment" } } // Activar cámara trasera
+            })
             .then(function(stream) {
                 video.srcObject = stream;
             })
