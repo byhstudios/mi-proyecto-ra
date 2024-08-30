@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AR con Detección de Plano</title>
+    <title>AR con Modelo 3D</title>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://rawcdn.githack.com/AR-js-org/AR.js/3.3.2/aframe/build/aframe-ar.js"></script>
     <style>
@@ -37,16 +37,16 @@
     <video id="videoElement" autoplay playsinline></video>
     <div id="modelContainer">
         <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
-            <!-- Usar un marcador para anclar el modelo al plano -->
-            <a-marker preset="hiro">
-                <a-entity 
-                    gltf-model="url(modelo.glb)" 
-                    position="0 0 0" 
-                    scale="1.5 1.5 1.5" 
-                    rotation="0 0 0">
-                </a-entity>
-            </a-marker>
-            <a-entity camera></a-entity>
+            <!-- Ajustar el modelo GLB -->
+            <a-entity 
+                gltf-model="url(modelo.glb)" 
+                position="0 0 0" 
+                scale="3 3 3" 
+                rotation="0 0 0"
+                look-at="[camera]">
+            </a-entity>
+            <!-- Cámara ajustada con FOV adecuado -->
+            <a-entity camera="fov: 80;"></a-entity>
         </a-scene>
     </div>
 
