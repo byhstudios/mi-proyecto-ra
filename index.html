@@ -22,21 +22,38 @@
     </style>
 </head>
 <body>
-    <video id="videoElement" autoplay></video>
+    <video id="videoElement" autoplay playsinline></video>
 
     <script>
         // Acceder a la cámara trasera
         const video = document.getElementById('videoElement');
 
         if (navigator.mediaDevices.getUserMedia) {
-            navigator.mediaDevices.getUserMedia({ 
-                video: { facingMode: { exact: "environment" } } // Activar cámara trasera
-            })
-            .then(function(stream) {
-                video.srcObject = stream;
+            navigator.mediaDevices.enumerateDevices()
+            .then(function(devices) {
+                let cameraId;
+                devices.forEach(function(device) {
+                    if (device.kind === 'videoinput' && device.label.toLowerCase().includes('back')) {
+                        cameraId = device.deviceId;
+                    }
+                });
+
+                if (cameraId) {
+                    navigator.mediaDevices.getUserMedia({ 
+                        video: { deviceId: { exact: cameraId } } // Usar la cámara trasera
+                    })
+                    .then(function(stream) {
+                        video.srcObject = stream;
+                    })
+                    .catch(function(error) {
+                        console.error("Error al acceder a la cámara: ", error);
+                    });
+                } else {
+                    console.error("No se encontró la cámara trasera.");
+                }
             })
             .catch(function(error) {
-                console.error("Error al acceder a la cámara: ", error);
+                console.error("Error al enumerar los dispositivos: ", error);
             });
         } else {
             console.error("getUserMedia no es compatible con este navegador.");
