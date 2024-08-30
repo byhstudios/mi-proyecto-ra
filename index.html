@@ -3,18 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Escena Simplificada</title>
+    <title>Escena Básica de A-Frame</title>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
 </head>
 <body style="margin: 0; overflow: hidden;">
-    <a-scene embedded>
-        <!-- Mostrar un simple cubo de color -->
-        <a-box position="0 0 -2" rotation="0 45 0" color="#4CC3D9"></a-box>
-        <a-entity camera position="0 0 0"></a-entity>
+    <a-scene>
+        <!-- Un cubo simple -->
+        <a-box position="0 1 -3" rotation="0 45 0" color="#4CC3D9"></a-box>
+
+        <!-- Cámara básica sin modificaciones adicionales -->
+        <a-entity camera></a-entity>
     </a-scene>
 
     <script>
-        console.log('Escena simplificada cargada correctamente');
+        console.log('Escena básica cargada correctamente');
     </script>
 </body>
 </html>
