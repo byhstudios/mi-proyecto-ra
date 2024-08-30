@@ -8,11 +8,12 @@
     <script src="https://rawcdn.githack.com/AR-js-org/AR.js/3.3.2/aframe/build/aframe-ar.js"></script>
 </head>
 <body style="margin: 0; overflow: hidden;">
-    <a-scene embedded arjs="sourceType: webcam;">
+    <a-scene embedded arjs="sourceType: webcam; videoTexture: true;">
         <a-entity obj-model="obj: url(assets/modelo.obj); mtl: url(assets/modelo.mtl)"
                   position="0 5 0" 
                   scale="5 5 5"></a-entity>
-         <a-entity camera="fov: 90;"></a-entity>
+        <!-- Cámara de perspectiva con un FOV más amplio -->
+        <a-entity camera="fov: 110;"></a-entity>
     </a-scene>
 </body>
 </html>
