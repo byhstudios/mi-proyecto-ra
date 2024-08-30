@@ -10,10 +10,8 @@
             margin: 0;
             padding: 0;
             overflow: hidden;
-            position: relative;
             width: 100%;
             height: 100vh;
-            background-color: black;
         }
     </style>
 </head>
@@ -26,8 +24,8 @@
             scale="3 3 3" 
             rotation="-15 0 0"> <!-- Inclinación ligera hacia abajo -->
         </a-entity>
-        <!-- Cámara con FOV adecuado -->
-        <a-entity camera="fov: 80;"></a-entity>
+        <!-- Cámara sin cambios, asegurando que permanezca constante -->
+        <a-entity camera></a-entity>
     </a-scene>
 </body>
 </html>
