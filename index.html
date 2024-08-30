@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prueba de Cámara sin AR.js</title>
+    <title>Acceder a la Cámara sin AR.js</title>
     <style>
         body, html {
             margin: 0;
@@ -26,7 +26,7 @@
     <video id="videoElement" autoplay></video>
 
     <script>
-        // Obtener acceso a la cámara
+        // Acceder a la cámara
         const video = document.getElementById('videoElement');
 
         if (navigator.mediaDevices.getUserMedia) {
@@ -35,7 +35,7 @@
                 video.srcObject = stream;
             })
             .catch(function(error) {
-                console.error("Algo salió mal al intentar acceder a la cámara: ", error);
+                console.error("Error al acceder a la cámara: ", error);
             });
         } else {
             console.error("getUserMedia no es compatible con este navegador.");
