@@ -1,14 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prueba Básica A-Frame</title>
-    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba de Cámara sin AR.js</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: black;
+        }
+        video {
+            width: 100%;
+            height: auto;
+            transform: scaleX(-1); /* Flip para que se vea como un espejo */
+        }
+    </style>
 </head>
-<body style="margin: 0; overflow: hidden;">
-    <a-scene>
-        <a-box position="0 0 -1" rotation="0 45 45" scale="0.5 0.5 0.5" color="#4CC3D9"></a-box>
-        <a-entity camera="fov: 80"></a-entity>
-    </a-scene>
+<body>
+    <video id="videoElement" autoplay></video>
+
+    <script>
+        // Obtener acceso a la cámara
+        const video = document.getElementById('videoElement');
+
+        if (navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function(stream) {
+                video.srcObject = stream;
+            })
+            .catch(function(error) {
+                console.error("Algo salió mal al intentar acceder a la cámara: ", error);
+            });
+        } else {
+            console.error("getUserMedia no es compatible con este navegador.");
+        }
+    </script>
 </body>
 </html>
