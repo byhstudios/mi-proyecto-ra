@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AR con Modelo 3D</title>
+    <title>AR con Modelo 3D Ajustado</title>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <script src="https://rawcdn.githack.com/AR-js-org/AR.js/3.3.2/aframe/build/aframe-ar.js"></script>
     <style>
         body, html {
             margin: 0;
@@ -16,74 +15,19 @@
             height: 100vh;
             background-color: black;
         }
-        #videoElement {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        #modelContainer {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
     </style>
 </head>
 <body>
-    <video id="videoElement" autoplay playsinline></video>
-    <div id="modelContainer">
-        <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
-            <!-- Ajustar el modelo GLB -->
-            <a-entity 
-                gltf-model="url(modelo.glb)" 
-                position="0 0 0" 
-                scale="3 3 3" 
-                rotation="0 0 0"
-                look-at="[camera]">
-            </a-entity>
-            <!-- Cámara ajustada con FOV adecuado -->
-            <a-entity camera="fov: 80;"></a-entity>
-        </a-scene>
-    </div>
-
-    <script>
-        // Acceder a la cámara trasera
-        const video = document.getElementById('videoElement');
-
-        if (navigator.mediaDevices.getUserMedia) {
-            navigator.mediaDevices.enumerateDevices()
-            .then(function(devices) {
-                let cameraId;
-                devices.forEach(function(device) {
-                    if (device.kind === 'videoinput' && device.label.toLowerCase().includes('back')) {
-                        cameraId = device.deviceId;
-                    }
-                });
-
-                if (cameraId) {
-                    navigator.mediaDevices.getUserMedia({ 
-                        video: { deviceId: { exact: cameraId } } // Usar la cámara trasera
-                    })
-                    .then(function(stream) {
-                        video.srcObject = stream;
-                    })
-                    .catch(function(error) {
-                        console.error("Error al acceder a la cámara: ", error);
-                    });
-                } else {
-                    console.error("No se encontró la cámara trasera.");
-                }
-            })
-            .catch(function(error) {
-                console.error("Error al enumerar los dispositivos: ", error);
-            });
-        } else {
-            console.error("getUserMedia no es compatible con este navegador.");
-        }
-    </script>
+    <a-scene embedded>
+        <!-- Cargar el modelo GLB con ajustes -->
+        <a-entity 
+            gltf-model="url(modelo.glb)" 
+            position="0 0 -2" 
+            scale="3 3 3" 
+            rotation="-15 0 0"> <!-- Inclinación ligera hacia abajo -->
+        </a-entity>
+        <!-- Cámara con FOV adecuado -->
+        <a-entity camera="fov: 80;"></a-entity>
+    </a-scene>
 </body>
 </html>
