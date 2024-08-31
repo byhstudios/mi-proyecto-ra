@@ -48,12 +48,14 @@
     </div>
 
     <script>
-        // Acceder a la cámara trasera
-        const video = document.getElementById('videoElement');
-
-        if (navigator.mediaDevices.getUserMedia) {
-            navigator.mediaDevices.enumerateDevices()
-            .then(function(devices) {
+        // Solicitar permisos para la cámara y acceder a la cámara trasera
+        async function requestCameraAccess() {
+            try {
+                // Solicitar permiso para la cámara
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                
+                // Enumerar dispositivos de video para encontrar la cámara trasera
+                const devices = await navigator.mediaDevices.enumerateDevices();
                 let cameraId;
                 devices.forEach(function(device) {
                     if (device.kind === 'videoinput' && device.label.toLowerCase().includes('back')) {
@@ -62,22 +64,23 @@
                 });
 
                 if (cameraId) {
-                    navigator.mediaDevices.getUserMedia({ 
-                        video: { deviceId: { exact: cameraId } } // Usar la cámara trasera
-                    })
-                    .then(function(stream) {
-                        video.srcObject = stream;
-                    })
-                    .catch(function(error) {
-                        console.error("Error al acceder a la cámara: ", error);
+                    // Usar la cámara trasera
+                    const backStream = await navigator.mediaDevices.getUserMedia({ 
+                        video: { deviceId: { exact: cameraId } } 
                     });
+                    const videoElement = document.getElementById('videoElement');
+                    videoElement.srcObject = backStream;
                 } else {
                     console.error("No se encontró la cámara trasera.");
                 }
-            })
-            .catch(function(error) {
-                console.error("Error al enumerar los dispositivos: ", error);
-            });
+            } catch (error) {
+                console.error("Error al acceder a la cámara: ", error);
+            }
+        }
+
+        // Verificar si el navegador es compatible y luego solicitar acceso a la cámara
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            requestCameraAccess();
         } else {
             console.error("getUserMedia no es compatible con este navegador.");
         }
