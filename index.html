@@ -48,37 +48,44 @@
     </div>
 
     <script>
-        // Solicitar permisos para la cámara y acceder a la cámara trasera
         async function requestCameraAccess() {
             try {
-                // Solicitar permiso para la cámara
-                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                console.log("Solicitando acceso a la cámara...");
                 
-                // Enumerar dispositivos de video para encontrar la cámara trasera
+                // Solicitar acceso a la cámara
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                console.log("Acceso a la cámara concedido.");
+
+                // Enumerar dispositivos de video
                 const devices = await navigator.mediaDevices.enumerateDevices();
-                let cameraId;
+                let cameraId = null;
+                
                 devices.forEach(function(device) {
+                    console.log(`Dispositivo encontrado: ${device.label} (ID: ${device.deviceId})`);
                     if (device.kind === 'videoinput' && device.label.toLowerCase().includes('back')) {
                         cameraId = device.deviceId;
+                        console.log(`Cámara trasera seleccionada: ${device.label}`);
                     }
                 });
 
                 if (cameraId) {
-                    // Usar la cámara trasera
+                    console.log("Intentando usar la cámara trasera...");
                     const backStream = await navigator.mediaDevices.getUserMedia({ 
                         video: { deviceId: { exact: cameraId } } 
                     });
                     const videoElement = document.getElementById('videoElement');
                     videoElement.srcObject = backStream;
+                    console.log("Cámara trasera activada.");
                 } else {
-                    console.error("No se encontró la cámara trasera.");
+                    console.warn("No se encontró la cámara trasera. Usando la cámara por defecto.");
+                    const videoElement = document.getElementById('videoElement');
+                    videoElement.srcObject = stream;
                 }
             } catch (error) {
                 console.error("Error al acceder a la cámara: ", error);
             }
         }
 
-        // Verificar si el navegador es compatible y luego solicitar acceso a la cámara
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             requestCameraAccess();
         } else {
