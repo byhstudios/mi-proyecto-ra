@@ -48,46 +48,36 @@
     </div>
 
     <script>
-        async function requestCameraAccess() {
-            try {
-                console.log("Solicitando acceso a la cámara...");
-                
-                // Solicitar acceso a la cámara
-                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-                console.log("Acceso a la cámara concedido.");
+        // Acceder a la cámara trasera
+        const video = document.getElementById('videoElement');
 
-                // Enumerar dispositivos de video
-                const devices = await navigator.mediaDevices.enumerateDevices();
-                let cameraId = null;
-                
+        if (navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.enumerateDevices()
+            .then(function(devices) {
+                let cameraId;
                 devices.forEach(function(device) {
-                    console.log(`Dispositivo encontrado: ${device.label} (ID: ${device.deviceId})`);
                     if (device.kind === 'videoinput' && device.label.toLowerCase().includes('back')) {
                         cameraId = device.deviceId;
-                        console.log(`Cámara trasera seleccionada: ${device.label}`);
                     }
                 });
 
                 if (cameraId) {
-                    console.log("Intentando usar la cámara trasera...");
-                    const backStream = await navigator.mediaDevices.getUserMedia({ 
-                        video: { deviceId: { exact: cameraId } } 
+                    navigator.mediaDevices.getUserMedia({ 
+                        video: { deviceId: { exact: cameraId } } // Usar la cámara trasera
+                    })
+                    .then(function(stream) {
+                        video.srcObject = stream;
+                    })
+                    .catch(function(error) {
+                        console.error("Error al acceder a la cámara: ", error);
                     });
-                    const videoElement = document.getElementById('videoElement');
-                    videoElement.srcObject = backStream;
-                    console.log("Cámara trasera activada.");
                 } else {
-                    console.warn("No se encontró la cámara trasera. Usando la cámara por defecto.");
-                    const videoElement = document.getElementById('videoElement');
-                    videoElement.srcObject = stream;
+                    console.error("No se encontró la cámara trasera.");
                 }
-            } catch (error) {
-                console.error("Error al acceder a la cámara: ", error);
-            }
-        }
-
-        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-            requestCameraAccess();
+            })
+            .catch(function(error) {
+                console.error("Error al enumerar los dispositivos: ", error);
+            });
         } else {
             console.error("getUserMedia no es compatible con este navegador.");
         }
