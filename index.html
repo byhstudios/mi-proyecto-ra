@@ -37,15 +37,15 @@
     <div id="modelContainer">
         <a-scene embedded>
             <!-- Agregar luces a la escena -->
-            <a-light type="ambient" color="#ffffff" intensity="1"></a-light>
+            <a-light type="ambient" color="#ffffff" intensity="1.1"></a-light>
             <a-light type="directional" color="#ffffff" intensity="1" position="0 2 2"></a-light>
             
             <!-- Cargar el modelo GLB con ajustes -->
             <a-entity 
                 gltf-model="url(modelo.glb)" 
-                position="-0.29 -0.5 -2" 
+                position="-0.3 -0.5 -2" 
                 scale="3.5 3.5 3.5" 
-                rotation="-3 110 15"> 
+                rotation="-3 116 15"> 
             </a-entity>
             <a-entity camera></a-entity>
         </a-scene>
